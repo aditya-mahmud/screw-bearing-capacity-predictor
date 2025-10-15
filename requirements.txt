@@ -6,9 +6,7 @@ mdurl==0.1.2
 pygments==2.19.2
 
 # Machine learning
-tensorflow==2.18.0
-tensorflow-io-gcs-filesystem==0.31.0
-tensorflow-intel==2.18.0
+tensorflow==2.20.0
 keras==3.8.0
 keras-tuner==1.4.7
 scikeras==0.13.0
