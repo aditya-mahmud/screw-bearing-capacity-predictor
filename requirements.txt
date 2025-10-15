@@ -1,5 +1,6 @@
 streamlit==1.15.2
 tensorflow==2.10.1
+protobuf==3.19.6  # compatible with TF 2.10.1 and Streamlit 1.15.2
 keras==2.10.0
 scikit-learn==1.0.2
 scikeras==0.9.0
@@ -16,7 +17,6 @@ plotly==5.11.0
 joblib==1.1.1
 requests==2.28.2
 tqdm==4.64.1
-protobuf==3.20.3
 tensorboard==2.10.1
 tenacity==8.1.0
 pillow==9.4.0
