@@ -1,3 +1,68 @@
+import streamlit as st
+import os
+import sys
+import platform
+import joblib
+import sklearn
+import pandas as pd
+import numpy as np
+
+st.set_page_config(layout="wide")
+st.title("Deployment Environment Diagnostics")
+
+# --- Python & System Info ---
+st.header("Python and System Information")
+st.write(f"**Python Version:** {sys.version}")
+st.write(f"**Platform:** {platform.platform()}")
+
+# --- Library Versions ---
+st.header("Library Versions")
+st.write(f"**Streamlit:** {st.__version__}")
+st.write(f"**Joblib:** {joblib.__version__}")
+st.write(f"**Scikit-learn:** {sklearn.__version__}")
+st.write(f"**Pandas:** {pd.__version__}")
+st.write(f"**Numpy:** {np.__version__}")
+
+# --- File System Check ---
+st.header("File System Check")
+script_dir = os.path.dirname(os.path.abspath(__file__))
+st.write(f"**Script Directory (where the app is running):** `{script_dir}`")
+
+st.write(f"**Files found in this directory:**")
+try:
+    files_in_dir = os.listdir(script_dir)
+    st.code('\n'.join(files_in_dir))
+except Exception as e:
+    st.error(f"Could not list directory contents: {e}")
+
+# --- Check Individual Files ---
+st.subheader("Checking for Model Artifacts")
+files_to_check = ['final_model.pkl', 'scaler_X.pkl', 'scaler_y.pkl']
+for f_name in files_to_check:
+    file_path = os.path.join(script_dir, f_name)
+    st.markdown(f"---")
+    st.write(f"**File:** `{f_name}`")
+    st.write(f"**Absolute Path:** `{file_path}`")
+    
+    # Check existence
+    exists = os.path.exists(file_path)
+    st.write(f"**Exists?** {'✅ Yes' if exists else '❌ NO'}")
+
+    # If it exists, check its size
+    if exists:
+        try:
+            size_bytes = os.path.getsize(file_path)
+            st.write(f"**File Size:** {size_bytes} bytes")
+            if size_bytes == 0:
+                st.error("This file is EMPTY (0 bytes). It is likely corrupted or was not uploaded correctly.")
+            # For Git LFS, pointer files are typically small, e.g., < 200 bytes
+            elif 1 < size_bytes < 200:
+                st.warning("This file is very small. It might be a Git LFS pointer instead of the actual file.")
+        except Exception as e:
+            st.error(f"Could not get file size: {e}")
+
+# Stop the app here to prevent it from crashing
+st.stop()
 # app.py
 import streamlit as st
 import numpy as np
